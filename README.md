@@ -31,7 +31,6 @@ A web-based simulator that demonstrates a basic copy trading system where a mast
 ├── trade_log.csv        # Exported CSV trades
 ├── requirements.txt     # Python dependencies
 └── README.md            # You’re here!
----
 ```
 ### 💼 Created By
 Keshav Lakhotia — for internship opportunity at ConsoleCoder.
