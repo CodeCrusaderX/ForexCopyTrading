@@ -145,7 +145,6 @@ if username == "master":
     if st.button("🔴 Sell EUR/USD"):
         place_trade("sell")
         st.rerun()
-
 # --- Account Balances ---
 st.write("## 🧾 Account Balance")
 if username == "master":
@@ -154,7 +153,7 @@ if username == "master":
     for i, (cid, cdata) in enumerate(data["clients"].items(), start=1):
         cols[i].metric(cid.capitalize(), f"${cdata['balance']:.2f}")
 else:
-    st.metric(username.capitalize(), f"${data[username]['balance']:.2f}")
+    st.metric(username.capitalize(), f"${data['clients'][username]['balance']:.2f}")
 
 # --- Trade Logs ---
 if username == "master":
@@ -166,8 +165,9 @@ if username == "master":
         show_client_trades(cid, cdata, price)
 else:
     st.write(f"### 👥 {username.capitalize()} Trades")
-    show_client_trades(username, data[username], price)
-
+    show_client_trades(username, data["clients"][username], price)
+    
+    
 # --- Logout ---
 if st.sidebar.button("🚪 Logout"):
     st.session_state.logged_in = False
