@@ -23,7 +23,7 @@ A web-based simulator that demonstrates a basic copy trading system where a mast
 ---
 
 ### 📁 Project Structure
-📦 ForexCopyTrading/
+```📦 ForexCopyTrading/
 ├── app.py               # Main Streamlit app
 ├── accounts.json        # Stores account balances & trades
 ├── trade_simulator.py   # Logic to simulate trades
@@ -32,6 +32,6 @@ A web-based simulator that demonstrates a basic copy trading system where a mast
 ├── requirements.txt     # Python dependencies
 └── README.md            # You’re here!
 ---
-
+```
 ### 💼 Created By
 Keshav Lakhotia — for internship opportunity at ConsoleCoder.
