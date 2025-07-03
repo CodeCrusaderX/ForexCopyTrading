@@ -1,0 +1,257 @@
+{
+  "master": {
+    "balance": 9200,
+    "trades": [
+      {
+        "id": "e0c6a2d6",
+        "pair": "EUR/USD",
+        "direction": "buy",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:02:11"
+      },
+      {
+        "id": "763af80c",
+        "pair": "EUR/USD",
+        "direction": "buy",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:05:30"
+      },
+      {
+        "id": "a6af36c2",
+        "pair": "EUR/USD",
+        "direction": "buy",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:05:55"
+      },
+      {
+        "id": "41063af6",
+        "pair": "EUR/USD",
+        "direction": "buy",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:10:10"
+      },
+      {
+        "id": "bc6d69d8",
+        "pair": "EUR/USD",
+        "direction": "buy",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:10:30"
+      },
+      {
+        "id": "7b70893d",
+        "pair": "EUR/USD",
+        "direction": "sell",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:10:38"
+      },
+      {
+        "id": "b67fd1a5",
+        "pair": "EUR/USD",
+        "direction": "sell",
+        "amount": 100,
+        "price": 1.1782,
+        "timestamp": "2025-07-03 23:10:44"
+      }
+    ]
+  },
+  "clients": {
+    "client1": {
+      "balance": 4200,
+      "trades": [
+        {
+          "id": "e0c6a2d6",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:02:11",
+          "copied_from": "master"
+        },
+        {
+          "id": "763af80c",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:05:30",
+          "copied_from": "master"
+        },
+        {
+          "id": "a6af36c2",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:05:55",
+          "copied_from": "master"
+        },
+        {
+          "id": "41063af6",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:10",
+          "copied_from": "master"
+        },
+        {
+          "id": "bc6d69d8",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:30",
+          "copied_from": "master"
+        },
+        {
+          "id": "7b70893d",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:38",
+          "copied_from": "master"
+        },
+        {
+          "id": "b67fd1a5",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:44",
+          "copied_from": "master"
+        },
+        {
+          "id": "41056c1c",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:16:45",
+          "copied_from": "master"
+        },
+        {
+          "id": "ea4b21e4",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:16:53",
+          "copied_from": "master"
+        },
+        {
+          "id": "cf782d1b",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:26:20",
+          "status": "open",
+          "copied_from": "master"
+        }
+      ]
+    },
+    "client2": {
+      "balance": 6700,
+      "trades": [
+        {
+          "id": "e0c6a2d6",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:02:11",
+          "copied_from": "master"
+        },
+        {
+          "id": "763af80c",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:05:30",
+          "copied_from": "master"
+        },
+        {
+          "id": "a6af36c2",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:05:55",
+          "copied_from": "master"
+        },
+        {
+          "id": "41063af6",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:10",
+          "copied_from": "master"
+        },
+        {
+          "id": "bc6d69d8",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:30",
+          "copied_from": "master"
+        },
+        {
+          "id": "7b70893d",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:38",
+          "copied_from": "master"
+        },
+        {
+          "id": "b67fd1a5",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:10:44",
+          "copied_from": "master"
+        },
+        {
+          "id": "41056c1c",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:16:45",
+          "copied_from": "master"
+        },
+        {
+          "id": "ea4b21e4",
+          "pair": "EUR/USD",
+          "direction": "sell",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:16:53",
+          "copied_from": "master"
+        },
+        {
+          "id": "cf782d1b",
+          "pair": "EUR/USD",
+          "direction": "buy",
+          "amount": 100,
+          "price": 1.1782,
+          "timestamp": "2025-07-03 23:26:20",
+          "status": "open",
+          "copied_from": "master"
+        }
+      ]
+    }
+  }
+}
