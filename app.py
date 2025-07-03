@@ -7,7 +7,6 @@ import pandas as pd
 
 # --- Config ---
 ACCOUNTS_FILE = "accounts.json"
-USERS_FILE = "users.json"
 API_KEY = st.secrets["API_KEY"]
 
 # --- Load Data ---
