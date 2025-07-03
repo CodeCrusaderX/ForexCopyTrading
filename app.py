@@ -6,8 +6,7 @@ import uuid
 import pandas as pd
 
 ACCOUNTS_FILE = "accounts.json"
-API_KEY = "eb80086ef12c49239705febc64252907"
-
+API_KEY = st.secrets["API_KEY"]
 # --- Utilities ---
 def load_accounts():
     with open(ACCOUNTS_FILE, "r") as file:
