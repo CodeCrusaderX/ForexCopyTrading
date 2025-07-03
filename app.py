@@ -19,11 +19,9 @@ def save_accounts(data):
     with open(ACCOUNTS_FILE, "w") as file:
         json.dump(data, file, indent=2)
 
-def load_users():
-    with open(USERS_FILE, "r") as f:
-        return json.load(f)
+import ast
+USERS = json.loads(st.secrets["USERS"])
 
-USERS = load_users()
 
 def get_live_price(base="EUR", quote="USD"):
     url = f"https://api.twelvedata.com/price?symbol={base}/{quote}&apikey={API_KEY}"
