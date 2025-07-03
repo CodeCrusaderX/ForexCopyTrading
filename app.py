@@ -5,9 +5,12 @@ from datetime import datetime
 import uuid
 import pandas as pd
 
+# --- Config ---
 ACCOUNTS_FILE = "accounts.json"
+USERS_FILE = "users.json"
 API_KEY = st.secrets["API_KEY"]
-# --- Utilities ---
+
+# --- Load Data ---
 def load_accounts():
     with open(ACCOUNTS_FILE, "r") as file:
         return json.load(file)
@@ -15,6 +18,12 @@ def load_accounts():
 def save_accounts(data):
     with open(ACCOUNTS_FILE, "w") as file:
         json.dump(data, file, indent=2)
+
+def load_users():
+    with open(USERS_FILE, "r") as f:
+        return json.load(f)
+
+USERS = load_users()
 
 def get_live_price(base="EUR", quote="USD"):
     url = f"https://api.twelvedata.com/price?symbol={base}/{quote}&apikey={API_KEY}"
@@ -40,16 +49,18 @@ def place_trade(direction, amount=100):
         "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "status": "open"
     }
+
     if direction.lower() == "buy":
         data["master"]["balance"] -= amount
         for client_data in data["clients"].values():
             client_data["balance"] -= amount
 
-    for client_id, client_data in data["clients"].items():
+    for client_data in data["clients"].values():
         copied_trade = trade.copy()
         copied_trade["copied_from"] = "master"
         client_data["trades"].append(copied_trade)
 
+    data["master"]["trades"].append(trade)
     save_accounts(data)
 
 def calculate_pnl(trade, current_price):
@@ -68,61 +79,7 @@ def calculate_pnl(trade, current_price):
     except:
         return 0
 
-# --- UI Starts Here ---
-st.set_page_config(page_title="Forex Copy Trading Simulator", layout="wide")
-st.title("📊 Forex Copy Trading Simulator")
-st.markdown("""
-Welcome to the Forex Copy Trading Simulator.  
-This demo showcases how a master trader's actions are replicated across multiple clients with real-time profit/loss calculation.
-
-🔹 Live price feed  
-🔹 Trade replication  
-🔹 Portfolio P&L  
-🔹 CSV export of trades  
-""")
-col1, col2 = st.columns([2, 1])
-with col1:
-    price = get_live_price("EUR", "USD")
-    st.metric("💱 EUR/USD Price", value=price)
-
-with col2:
-    st.write("### Place Trade (Master)")
-    if st.button("🟢 Buy EUR/USD"):
-        place_trade("buy")
-        st.rerun()
-
-    if st.button("🔴 Sell EUR/USD"):
-        place_trade("sell")
-        st.rerun()
-
-# Accounts Overview
-data = load_accounts()
-st.write("## 🧾 Account Balances")
-cols = st.columns(len(data["clients"]) + 1)
-cols[0].metric("Master", f"${data['master']['balance']:.2f}")
-for i, (cid, cdata) in enumerate(data["clients"].items(), start=1):
-    cols[i].metric(cid.capitalize(), f"${cdata['balance']:.2f}")
-
-# --- Master Trades Section ---
-st.write("## 📜 Trade Log")
-st.write("### 🧑‍🏫 Master Trades")
-master_df = pd.DataFrame(data["master"]["trades"])
-st.dataframe(master_df, use_container_width=True)
-
-# ✅ Export Master CSV
-master_csv = master_df.to_csv(index=False).encode("utf-8")
-st.download_button(
-    label="📤 Download Master Trades as CSV",
-    data=master_csv,
-    file_name="master_trades.csv",
-    mime="text/csv"
-)
-
-# --- Client Trades Section ---
-st.write("### 👥 Client Trades")
-for cid, cdata in data["clients"].items():
-    st.markdown(f"### 👤 {cid.capitalize()}")
-
+def show_client_trades(cid, cdata, price):
     trades = cdata["trades"]
     enriched_trades = []
     total_pnl = 0
@@ -140,39 +97,82 @@ for cid, cdata in data["clients"].items():
             "Time": t["timestamp"]
         })
 
-    # ✅ Show portfolio summary
     color = "green" if total_pnl > 0 else "red" if total_pnl < 0 else "black"
-    st.markdown(
-        f"<h5>💼 Portfolio P&L: <span style='color:{color}'>{round(total_pnl, 2)}</span></h5>",
-        unsafe_allow_html=True
-    )
+    st.markdown(f"<h5>💼 Portfolio P&L: <span style='color:{color}'>{round(total_pnl, 2)}</span></h5>", unsafe_allow_html=True)
 
-    client_df = pd.DataFrame(enriched_trades)
+    df = pd.DataFrame(enriched_trades)
 
-    # ✅ Style P&L column
     def color_pnl(val):
         return f"color: {'green' if val > 0 else 'red' if val < 0 else 'black'}; font-weight: bold"
 
-    styled_df = client_df.style.applymap(color_pnl, subset=["P&L"])
+    styled_df = df.style.applymap(color_pnl, subset=["P&L"])
     st.dataframe(styled_df, use_container_width=True)
 
-    # ✅ Export Client CSV
-    client_csv = client_df.to_csv(index=False).encode("utf-8")
-    st.download_button(
-        label=f"📤 Download {cid.capitalize()} Trades as CSV",
-        data=client_csv,
-        file_name=f"{cid}_trades.csv",
-        mime="text/csv"
-    )
+# --- Streamlit App ---
+st.set_page_config(page_title="Forex Copy Trading Simulator", layout="wide")
 
-# --- Reset Button ---
-if st.button("♻️ Reset Accounts"):
-    with open(ACCOUNTS_FILE, "w") as file:
-        json.dump({
-            "master": {"balance": 10000, "trades": []},
-            "clients": {
-                "client1": {"balance": 5000, "trades": []},
-                "client2": {"balance": 7500, "trades": []}
-            }
-        }, file, indent=2)
-    st.success("Accounts reset.")
+# --- Login Section ---
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+    st.session_state.username = None
+
+if not st.session_state.logged_in:
+    st.title("🔐 Login to Copy Trading App")
+    username = st.text_input("Username")
+    password = st.text_input("Password", type="password")
+    if st.button("Login"):
+        if username in USERS and USERS[username]["password"] == password:
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.success(f"✅ Logged in as {username}")
+            st.rerun()
+        else:
+            st.error("❌ Invalid credentials")
+    st.stop()
+
+# --- Main App ---
+data = load_accounts()
+username = st.session_state.username
+st.sidebar.success(f"Logged in as: {username}")
+
+price = get_live_price("EUR", "USD")
+st.title("📈 Forex Copy Trading Simulator (Demo)")
+st.metric("💱 EUR/USD Price", value=price)
+
+# --- Master Controls ---
+if username == "master":
+    st.write("### Place Trade (Master)")
+    if st.button("🟢 Buy EUR/USD"):
+        place_trade("buy")
+        st.rerun()
+    if st.button("🔴 Sell EUR/USD"):
+        place_trade("sell")
+        st.rerun()
+
+# --- Account Balances ---
+st.write("## 🧾 Account Balance")
+if username == "master":
+    cols = st.columns(len(data["clients"]) + 1)
+    cols[0].metric("Master", f"${data['master']['balance']:.2f}")
+    for i, (cid, cdata) in enumerate(data["clients"].items(), start=1):
+        cols[i].metric(cid.capitalize(), f"${cdata['balance']:.2f}")
+else:
+    st.metric(username.capitalize(), f"${data[username]['balance']:.2f}")
+
+# --- Trade Logs ---
+if username == "master":
+    st.write("### Master Trades")
+    st.table(data["master"]["trades"])
+
+    st.write("### Client Trades")
+    for cid, cdata in data["clients"].items():
+        show_client_trades(cid, cdata, price)
+else:
+    st.write(f"### 👥 {username.capitalize()} Trades")
+    show_client_trades(username, data[username], price)
+
+# --- Logout ---
+if st.sidebar.button("🚪 Logout"):
+    st.session_state.logged_in = False
+    st.session_state.username = None
+    st.rerun()
