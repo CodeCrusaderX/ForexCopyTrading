@@ -70,8 +70,16 @@ def calculate_pnl(trade, current_price):
 
 # --- UI Starts Here ---
 st.set_page_config(page_title="Forex Copy Trading Simulator", layout="wide")
-st.title("📈 Forex Copy Trading Simulator (Demo)")
+st.title("📊 Forex Copy Trading Simulator")
+st.markdown("""
+Welcome to the Forex Copy Trading Simulator.  
+This demo showcases how a master trader's actions are replicated across multiple clients with real-time profit/loss calculation.
 
+🔹 Live price feed  
+🔹 Trade replication  
+🔹 Portfolio P&L  
+🔹 CSV export of trades  
+""")
 col1, col2 = st.columns([2, 1])
 with col1:
     price = get_live_price("EUR", "USD")
