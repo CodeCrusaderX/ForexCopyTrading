@@ -89,11 +89,11 @@ with col2:
     st.write("### Place Trade (Master)")
     if st.button("🟢 Buy EUR/USD"):
         place_trade("buy")
-        st.experimental_rerun()
+        st.rerun()
 
     if st.button("🔴 Sell EUR/USD"):
         place_trade("sell")
-        st.experimental_rerun()
+        st.rerun()
 
 # Accounts Overview
 data = load_accounts()
