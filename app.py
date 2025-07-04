@@ -232,7 +232,7 @@ if username == "master":
         with open(filename, "rb") as f:
             st.download_button(label="⬇️ Click to Download PDF", data=f, file_name=filename, mime="application/pdf")
         with st.expander("📧 Send PDF Report via Email"):
-            recipient = st.text_input("Recipient Email", placeholder="e.g. yourname@gmail.com")
+            recipient = st.text_input("Recipient Email", placeholder="prak1har@gmail.com")
             if st.button("📤 Send Email"):
                 if recipient:
                     success = send_pdf_email(
