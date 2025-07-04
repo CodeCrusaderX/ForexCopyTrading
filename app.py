@@ -163,22 +163,77 @@ else:
     st.metric(username.capitalize(), f"${data['clients'][username]['balance']:.2f}")
 
 # --- Trade Logs ---
-if username == "master":
-    st.write("### Master Trades")
-    st.table(data["master"]["trades"])
+# 📄 PDF Generation for Clients
+if username != "master":
+    st.write(f"### 👥 {username.capitalize()} Trades")
+
+    trades = data["clients"][username]["trades"]
+    enriched_trades = []
+    total_pnl = 0
+
+    for t in trades:
+        pnl = calculate_pnl(t, price)
+        total_pnl += pnl
+        enriched_trades.append({
+            "ID": t["id"],
+            "Direction": t["direction"],
+            "Amount": t["amount"],
+            "Entry Price": t["price"],
+            "Current Price": price,
+            "P&L": pnl,
+            "Time": t["timestamp"]
+        })
+
+    color = "green" if total_pnl > 0 else "red" if total_pnl < 0 else "black"
+    st.markdown(f"<h5>💼 Portfolio P&L: <span style='color:{color}'>{round(total_pnl, 2)}</span></h5>", unsafe_allow_html=True)
+
+    df = pd.DataFrame(enriched_trades)
+
+    def color_pnl(val):
+        return f"color: {'green' if val > 0 else 'red' if val < 0 else 'black'}; font-weight: bold"
+
+    st.dataframe(df.style.applymap(color_pnl, subset=["P&L"]), use_container_width=True)
+
+    # 📥 PDF Download
     if st.button("📄 Download PDF Report"):
         filename = f"{username}_report.pdf"
-        generate_pdf_report(username, enriched_trades, data[username]["balance"], total_pnl, filename)
+        generate_pdf_report(username, enriched_trades, data["clients"][username]["balance"], total_pnl, filename)
         with open(filename, "rb") as f:
             st.download_button(label="⬇️ Click to Download PDF", data=f, file_name=filename, mime="application/pdf")
-            
+
+# 📄 PDF Generation for Master
+if username == "master":
+    st.write("### Master Trades")
+
+    trades = data["master"]["trades"]
+    enriched_trades = []
+    total_pnl = 0
+
+    for t in trades:
+        pnl = calculate_pnl(t, price)
+        total_pnl += pnl
+        enriched_trades.append({
+            "ID": t["id"],
+            "Direction": t["direction"],
+            "Amount": t["amount"],
+            "Entry Price": t["price"],
+            "Current Price": price,
+            "P&L": pnl,
+            "Time": t["timestamp"]
+        })
+
+    df = pd.DataFrame(enriched_trades)
+    st.dataframe(df, use_container_width=True)
+
+    if st.button("📄 Download PDF Report"):
+        filename = f"{username}_report.pdf"
+        generate_pdf_report(username, enriched_trades, data["master"]["balance"], total_pnl, filename)
+        with open(filename, "rb") as f:
+            st.download_button(label="⬇️ Click to Download PDF", data=f, file_name=filename, mime="application/pdf")
+
     st.write("### Client Trades")
     for cid, cdata in data["clients"].items():
         show_client_trades(cid, cdata, price)
-else:
-    st.write(f"### 👥 {username.capitalize()} Trades")
-    show_client_trades(username, data["clients"][username], price)
-    
     
 # --- Logout ---
 if st.sidebar.button("🚪 Logout"):
