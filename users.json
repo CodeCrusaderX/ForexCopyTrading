@@ -1,0 +1,5 @@
+{
+  "master": {"password": "master123"},
+  "client1": {"password": "client123"},
+  "client2": {"password": "client123"}
+}

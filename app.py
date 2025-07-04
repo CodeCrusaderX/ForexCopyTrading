@@ -139,12 +139,18 @@ st.metric("💱 EUR/USD Price", value=price)
 # --- Master Controls ---
 if username == "master":
     st.write("### Place Trade (Master)")
-    if st.button("🟢 Buy EUR/USD"):
-        place_trade("buy")
-        st.rerun()
-    if st.button("🔴 Sell EUR/USD"):
-        place_trade("sell")
-        st.rerun()
+
+    trade_amount = st.number_input("Enter Trade Amount ($)", min_value=10, max_value=10000, value=100, step=50)
+
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("🟢 Buy EUR/USD"):
+            place_trade("buy", amount=trade_amount)
+            st.rerun()
+    with col2:
+        if st.button("🔴 Sell EUR/USD"):
+            place_trade("sell", amount=trade_amount)
+            st.rerun()
 # --- Account Balances ---
 st.write("## 🧾 Account Balance")
 if username == "master":
