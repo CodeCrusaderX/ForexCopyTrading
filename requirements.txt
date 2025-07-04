@@ -2,3 +2,4 @@ forex-python
 pandas
 streamlit
 fpdf
+yagmail

@@ -5,6 +5,7 @@ from datetime import datetime
 import uuid
 import pandas as pd
 from pdf_report import generate_pdf_report
+from send_email import send_pdf_email
 
 # --- Config ---
 ACCOUNTS_FILE = "accounts.json"
@@ -230,6 +231,20 @@ if username == "master":
         generate_pdf_report(username, enriched_trades, data["master"]["balance"], total_pnl, filename)
         with open(filename, "rb") as f:
             st.download_button(label="⬇️ Click to Download PDF", data=f, file_name=filename, mime="application/pdf")
+        with st.expander("📧 Send PDF Report via Email"):
+            recipient = st.text_input("Recipient Email", placeholder="e.g. yourname@gmail.com")
+            if st.button("📤 Send Email"):
+                if recipient:
+                    success = send_pdf_email(
+                    recipient=recipient,
+                    subject="📈 Your Forex Copy Trading Report",
+                    body="Hi,\n\nPlease find attached your trading report.\n\nBest regards,\nForex Trading App",
+                    attachment_path=filename
+                )
+                if success:
+                    st.success("✅ Email sent successfully!")
+            else:
+                st.warning("Please enter a recipient email.")
 
     st.write("### Client Trades")
     for cid, cdata in data["clients"].items():
