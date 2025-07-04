@@ -4,6 +4,7 @@ import json
 from datetime import datetime
 import uuid
 import pandas as pd
+from pdf_report import generate_pdf_report
 
 # --- Config ---
 ACCOUNTS_FILE = "accounts.json"
@@ -165,7 +166,12 @@ else:
 if username == "master":
     st.write("### Master Trades")
     st.table(data["master"]["trades"])
-
+    if st.button("📄 Download PDF Report"):
+        filename = f"{username}_report.pdf"
+        generate_pdf_report(username, enriched_trades, data[username]["balance"], total_pnl, filename)
+        with open(filename, "rb") as f:
+            st.download_button(label="⬇️ Click to Download PDF", data=f, file_name=filename, mime="application/pdf")
+            
     st.write("### Client Trades")
     for cid, cdata in data["clients"].items():
         show_client_trades(cid, cdata, price)
