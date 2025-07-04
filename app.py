@@ -243,6 +243,8 @@ if username == "master":
                 )
                 if success:
                     st.success("✅ Email sent successfully!")
+                else:
+                    st.error("❌ Failed to send email.")
             else:
                 st.warning("Please enter a recipient email.")
 
